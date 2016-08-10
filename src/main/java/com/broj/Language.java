@@ -20,7 +20,7 @@ public class Language {
         langSet.add(C);
     }
 
-    public static String isThere(String lang) {
-        return langSet.contains(lang.toLowerCase()) ? lang.toLowerCase() : null;
+    public static boolean isThere(String lang) {
+        return langSet.contains(lang);
     }
 }

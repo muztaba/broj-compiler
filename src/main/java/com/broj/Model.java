@@ -53,7 +53,7 @@ public class Model {
         return f;
     }
 
-    public void validate() {
+    private void validate() {
         languageCheck(language);
         pathCheck(srcPath);
         pathCheck(inputPath);
@@ -61,8 +61,8 @@ public class Model {
     }
 
     private void languageCheck(String lang) {
-        if (Language.isThere(lang) == null)
-            throw new RuntimeException("Language parameter is not set");
+        if (Language.isThere(lang))
+            throw new RuntimeException("Language parameter is not set : " + lang);
     }
 
     private void pathCheck(String filePath) {
