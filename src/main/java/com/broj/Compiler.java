@@ -14,6 +14,7 @@ public class Compiler {
 
     public CompileStatus compile(ProcessBuilder processBuilder, String fileLocation) {
         logger.info("Code compilation started...");
+        logger.debug("fileLocation, {}", fileLocation);
         boolean compiled = true;
         logger.info("file location, {}", fileLocation);
         processBuilder.directory(new File(fileLocation));

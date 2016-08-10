@@ -61,7 +61,7 @@ public class Model {
     }
 
     private void languageCheck(String lang) {
-        if (Language.isThere(lang))
+        if (!Language.isThere(lang))
             throw new RuntimeException("Language parameter is not set : " + lang);
     }
 

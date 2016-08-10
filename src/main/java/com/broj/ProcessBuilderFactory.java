@@ -9,16 +9,16 @@ import java.nio.file.Paths;
  */
 public class ProcessBuilderFactory {
 
-    public static ProcessBuilder getProcessBuilder(String lang, String srcPath, String compiledPath) {
+    public static ProcessBuilder getProcessBuilder(Model model, String compiledPath) {
         ProcessBuilder processBuilder = null;
 
-        switch (lang) {
+        switch (model.language) {
             case Language.CPP :
-                String str = compiledPath + "/" + IOUtils.getFileName(srcPath);
-                processBuilder = new ProcessBuilder("g++", srcPath, "-o", compiledPath);
+                String str = compiledPath + model.getFileName(false);
+                processBuilder = new ProcessBuilder("g++", model.srcPath, "-o", str);
                 break;
             case Language.JAVA :
-                processBuilder = new ProcessBuilder("javac", "-d", compiledPath, srcPath);
+                processBuilder = new ProcessBuilder("javac", "-d", compiledPath, model.srcPath);
                 break;
         }
 

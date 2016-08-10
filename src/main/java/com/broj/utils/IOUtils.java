@@ -20,8 +20,10 @@ public class IOUtils {
     public static void createDir(String path) {
         try {
             File file = new File(path);
-            FileUtils.cleanDirectory(file);
-            FileUtils.forceDelete(file);
+            if (isDirExists(path)) {
+                    FileUtils.cleanDirectory(file);
+                    FileUtils.forceDelete(file);
+            }
             FileUtils.forceMkdir(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -30,5 +32,9 @@ public class IOUtils {
 
     public static String getFileName(String path) {
         return Paths.get(path).getFileName().toString();
+    }
+
+    public static boolean isDirExists(String path) {
+        return Files.exists(Paths.get(path));
     }
 }

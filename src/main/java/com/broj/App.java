@@ -5,6 +5,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * Hello world!
  *
@@ -20,13 +22,16 @@ public class App {
         Configuration configuration = Configuration.load();
         workingDir = configuration.get("working.dir");
         IOUtils.createDir(workingDir);
-        ProcessBuilder compile = ProcessBuilderFactory.getProcessBuilder(model.language, model.srcPath, workingDir);
+
+        ProcessBuilder compile = ProcessBuilderFactory.getProcessBuilder(model, workingDir);
         Compiler compiler = new Compiler();
-        CompileStatus compileStatus = compiler.compile(compile, FilenameUtils.getPath(model.srcPath));
+        CompileStatus compileStatus = compiler.compile(compile, new File(model.srcPath).getParent());
         logger.info("{}", compileStatus);
+
         ProcessBuilder execution = ProcessBuilderFactory.getExecutionProcessBuilder(model.language
                 , model.getFileName(false));
         CompileStatus executionStatus = compiler.execute(execution, workingDir, model.inputPath,
                 workingDir + "/output.txt", 2000);
+        logger.info("execution status, {}", executionStatus);
     }
 }
