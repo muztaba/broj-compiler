@@ -16,11 +16,7 @@ public class App {
     private static String workingDir;
 
     public static void main( String[] args ) {
-        if (args.length != 4)
-            throw new RuntimeException("Why the fuck args length is not correct ?");
-
-        Model model = new Model(args[0], args[1], args[2], args[3]);
-        model.validate();
+        Model model = Model.getModel(args);
         Configuration configuration = Configuration.load();
         workingDir = configuration.get("working.dir");
         IOUtils.createDir(workingDir);

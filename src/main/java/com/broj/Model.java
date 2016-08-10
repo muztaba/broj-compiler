@@ -7,18 +7,29 @@ import com.broj.utils.IOUtils;
  * Created by seal on 8/9/16.
  */
 public class Model {
+
     public final String language;
     public final String srcPath;
     public final String inputPath;
     public final String resultFilePath;
+
     private String fileName;
     private String fileNameWithoutExtension;
 
-    public Model(String language, String srcPath, String inputPath, String resultFilePath) {
+    private Model(String language, String srcPath, String inputPath, String resultFilePath) {
         this.language = language.trim().toLowerCase();
         this.srcPath = srcPath.trim();
         this.inputPath = inputPath.trim();
         this.resultFilePath = resultFilePath.trim();
+    }
+
+    public static Model getModel(String[] args) {
+        if (args.length != 4)
+            throw new RuntimeException("args is not in correct length " + args.length);
+
+        Model model = new Model(args[0], args[1], args[2], args[3]);
+        model.validate();
+        return model;
     }
 
     /**
