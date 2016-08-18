@@ -6,12 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 /**
  * Created by seal on 8/9/16.
  */
-public class IOUtils {
+public class FileUtil {
 
     public static boolean checkPath(String path) {
         return Files.exists(Paths.get(path));
@@ -36,5 +35,9 @@ public class IOUtils {
 
     public static boolean isDirExists(String path) {
         return Files.exists(Paths.get(path));
+    }
+
+    public static String getParent(String path) {
+        return new File(path).getParent();
     }
 }

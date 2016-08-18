@@ -1,11 +1,8 @@
 package com.broj;
 
-import com.broj.utils.IOUtils;
-import org.apache.commons.io.FilenameUtils;
+import com.broj.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 /**
  * Hello world!
@@ -21,17 +18,16 @@ public class App {
         Model model = Model.getModel(args);
         Configuration configuration = Configuration.load();
         workingDir = configuration.get("working.dir");
-        IOUtils.createDir(workingDir);
+        FileUtil.createDir(workingDir);
 
         ProcessBuilder compile = ProcessBuilderFactory.getProcessBuilder(model, workingDir);
         Compiler compiler = new Compiler();
-        CompileStatus compileStatus = compiler.compile(compile, new File(model.srcPath).getParent());
+        CompileStatus compileStatus = compiler.compile(compile, model.getParent());
         logger.info("{}", compileStatus);
 
-        ProcessBuilder execution = ProcessBuilderFactory.getExecutionProcessBuilder(model.language
-                , model.getFileName(false));
-        CompileStatus executionStatus = compiler.execute(execution, workingDir, model.inputPath,
-                workingDir + "/output.txt", 2000);
+        ProcessBuilder execution = ProcessBuilderFactory.getExecutionProcessBuilder(model);
+        CompileStatus executionStatus = compiler.execute(execution, workingDir, model.getInputPath(),
+                workingDir + "/output.txt", model.getTimeLimit());
         logger.info("execution status, {}", executionStatus);
     }
 }

@@ -43,6 +43,14 @@
       <version>${slf4j}</version>
     </dependency>
 
+    <!--Utility for getter and setter-->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.6</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Apache Commons IO library  -->
     <dependency>
       <groupId>commons-io</groupId>

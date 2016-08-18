@@ -1,33 +1,41 @@
 package com.broj;
 
 
-import com.broj.utils.IOUtils;
+import com.broj.utils.FileUtil;
+import lombok.*;
 
 /**
  * Created by seal on 8/9/16.
  */
+
+@Data
 public class Model {
 
-    public final String language;
-    public final String srcPath;
-    public final String inputPath;
-    public final String resultFilePath;
+    private final String language;
+    private final String srcPath;
+    private final String inputPath;
+    private final String resultFilePath;
+    private final long timeLimit;
 
+    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE)
     private String fileName;
+
+    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE)
     private String fileNameWithoutExtension;
 
-    private Model(String language, String srcPath, String inputPath, String resultFilePath) {
+    private Model(String language, String srcPath, String inputPath, String resultFilePath, String timeLimit) {
         this.language = language.trim().toLowerCase();
         this.srcPath = srcPath.trim();
         this.inputPath = inputPath.trim();
         this.resultFilePath = resultFilePath.trim();
+        this.timeLimit = Long.parseLong(timeLimit.trim());
     }
 
     public static Model getModel(String[] args) {
-        if (args.length != 4)
+        if (args.length != 5)
             throw new RuntimeException("args is not in correct length " + args.length);
 
-        Model model = new Model(args[0], args[1], args[2], args[3]);
+        Model model = new Model(args[0], args[1], args[2], args[3], args[4]);
         model.validate();
         return model;
     }
@@ -41,7 +49,7 @@ public class Model {
         String f = null;
         if (var) {
             fileName = fileName != null ? fileName :
-                    (fileName = IOUtils.getFileName(srcPath));
+                    (fileName = FileUtil.getFileName(srcPath));
             f = fileName;
         } else {
             if (fileNameWithoutExtension == null) {
@@ -51,6 +59,10 @@ public class Model {
             f = fileNameWithoutExtension;
         }
         return f;
+    }
+
+    public String getParent() {
+        return FileUtil.getParent(srcPath);
     }
 
     private void validate() {
@@ -66,7 +78,7 @@ public class Model {
     }
 
     private void pathCheck(String filePath) {
-        if (!IOUtils.checkPath(filePath))
+        if (!FileUtil.checkPath(filePath))
             throw new RuntimeException("File is not in place at = " + filePath);
     }
 }
