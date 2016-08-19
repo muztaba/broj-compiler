@@ -1,5 +1,6 @@
 package com.broj;
 
+import com.broj.api.AbstractModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Compiler {
     private static final Logger logger = LoggerFactory.getLogger(Compiler.class);
+
+    private static final String outputFileName = "/output.txt";
 
     public CompileStatus compile(ProcessBuilder processBuilder, String fileLocation) {
         logger.info("Code compilation started...");
@@ -44,19 +47,17 @@ public class Compiler {
         return CompileStatus.COMPILE_ERROR;
     }
 
-    public CompileStatus execute(ProcessBuilder processBuilder, String fileLocation,
-                                 String inputFilePath, String outputFilePath,
-                                 long timeInMillis) {
+    public CompileStatus execute(ProcessBuilder processBuilder, AbstractModel model) {
         logger.info("Execution started");
 
         processBuilder.redirectErrorStream(true);
-        processBuilder.directory(new File(fileLocation));
-        processBuilder.redirectInput(new File(inputFilePath));
-        processBuilder.redirectOutput(new File(outputFilePath));
+        processBuilder.directory(new File(model.getWorkingDir()));
+        processBuilder.redirectInput(new File(model.getInputFilePath()));
+        processBuilder.redirectOutput(new File(model.getWorkingDir() + outputFileName));
 
         try {
             Process process = processBuilder.start();
-            if (!process.waitFor(timeInMillis, TimeUnit.MILLISECONDS))
+            if (!process.waitFor(model.getTimeLimit(), TimeUnit.MILLISECONDS))
                 return CompileStatus.TIME_LIMIT_EXIT;
             int exitCode = process.exitValue();
             if (exitCode != 0) {

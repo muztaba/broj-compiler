@@ -29,6 +29,11 @@ public class FileUtil {
         }
     }
 
+    public static String fileNameWithoutExtension(String path) {
+        String[] strings = getFileName(path).split("\\.");
+        return strings[0];
+    }
+
     public static String getFileName(String path) {
         return Paths.get(path).getFileName().toString();
     }

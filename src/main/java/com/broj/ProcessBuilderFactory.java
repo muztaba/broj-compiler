@@ -1,14 +1,20 @@
 package com.broj;
 
+import com.broj.api.AbstractModel;
+import com.broj.utils.FileUtil;
+
+import java.io.File;
+
 /**
  * Created by seal on 8/9/16.
  */
 
 public class ProcessBuilderFactory {
 
-    public static ProcessBuilder getProcessBuilder(Model model, String compiledPath) {
+    public static ProcessBuilder getProcessBuilder(AbstractModel model) {
         ProcessBuilder processBuilder = null;
-        String lang = model.getLanguage();
+        String lang = model.getLang();
+        String compiledPath = model.getWorkingDir();
         String srcPath = model.getSrcPath();
 
         switch (lang) {
@@ -24,9 +30,9 @@ public class ProcessBuilderFactory {
         return processBuilder;
     }
 
-    public static ProcessBuilder getExecutionProcessBuilder(Model model) {
+    public static ProcessBuilder getExecutionProcessBuilder(AbstractModel model) {
         ProcessBuilder processBuilder = null;
-        String lang = model.getLanguage();
+        String lang = model.getLang();
         String fileName = model.getFileName(false);
 
         switch (lang) {
